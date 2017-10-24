@@ -1,0 +1,3 @@
+sudo apt install gnuradio
+sudo apt install gr-osmosdr
+sudo apt install gqrx-sdr
