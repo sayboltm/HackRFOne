@@ -1,0 +1,3 @@
+# Ignore .dat, our raw signal data, hopefully recursively
+# Maybe one day, the decoded bits in a text file
+**.dat
