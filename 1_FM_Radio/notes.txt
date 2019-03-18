@@ -1,0 +1,36 @@
+General:
+beware type incomatiblities, make sure types/colors match
+D key to disable
+OOOOOOOOO = overrun your comp isn't keeping up with the data coming from HackRF
+	only a problem if its continuous/frequently happening
+recommends clicking stop button instead of closing foreground window
+
+Lesson content:
+in osmocom source:
+	set Ch0: RF Gain (dB) to 0, turn off frontend LNA near antenna in
+hackRF. Good to leave off unless in situation where need to pick up a very weak
+signal
+
+FFT sink, set baseband freq to a center_freq or whatever you are tuning to
+	it is just the scale
+
+Can tune the hackRF, or we can do it in software using multiply operator
+multiply signal by a cosine of frequency that we want to shift 
+
+Why do we do center_freq - channel_freq? allows shift away from DC spike
+
+Decimation related to amount of bandwith required to get signal
+	we decimate in the LPF
+	reduces sample rate, samp_rate/channel_width
+channel_width - set to 200 kHz 
+
+resampler: interp 12, decimate 5, 
+
+WBFM Rx
+quadrature rate - sample rate of imput
+audio decimation - how much to futher decimate
+	reduce to 480
+	most of flowgraph at 10 M, LPF /50 to 200k, *12/5 = 480k, 480k/10 is
+48k, great for sound cards
+
+Math operator multiply Const used to adjust audio gain
