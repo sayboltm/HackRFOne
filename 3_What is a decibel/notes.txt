@@ -1,0 +1,38 @@
+What is a decibel?
+
+taking tangent from HW solutions because this is important to the content
+
+10*log_10(A/B)
+or
+20*log_10(A/B)
+
+yes but 2 fundamental things about Db you shoud know
+
+1 dB = 1/10 * Bel
+10 dB = 1 bel
+a bel is  order of magnitude, or ratios of 10:1
+
+10:1 = 1 bel
+100:1 = 2 bel
+
+A/B = 10^n, where n = num bels
+
+good for describing quantities over wide varietys of range
+and math shortcuts 
+
+eyeballing:
+3 dB ~ 2:1
+10 dB = 10:1 
+
+3 things people get wrong with dB:
+1. fail to tell what db is relative to. e.g. dBmike taller than me
+2. amplitude vs power (I have screwed this up in ECE302)
+	power is the amp^2, where 10log10 and 20log10 come from
+	when describing amp, only describe amps
+	when describing power, only describe power
+	otherwise you have to track all the maths
+3. Negatives
+	-5 dB loss (would be positive, is a gain)
+	5 dB loss
+
+paused lesson 3 at 17:12, makingspreadsheet

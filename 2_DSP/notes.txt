@@ -1,0 +1,45 @@
+DSP
+
+General:
+
+Content:
+See ECE366 Advanced signal processing
+
+but..
+
+Analog vs digital signals represented in time (stem/dots for digital)
+likes x because faster to draw
+
+sampler/ADC that samples the signal at discrete time periods
+
+throttle block:
+
+Homework:
+1. Create a flowgraph like the one in the video or the screenshot below.
+
+2. Does the flowgraph behave differently if you remove the throttle block? (Connect the source directly to the sink.)
+A: not super visible, open htop for analysis. throttle limits CPU coming from a
+file. Only throttle block limits realtime rate of the flow graph.
+
+3. Does the FFT sink correctly indicate the frequency produced by the source? What if the source and sink have different sample rates configured?
+A: Yes. But if different sample rates, no. But it does do the exact same
+analysis just with a different ruler. 
+See lesson 4 Aliasing (1st section)
+
+4. What happens if you configure the signal source with various frequencies between 0 and 16k?
+A: slides around as expected. see lesson 4 ~30:00
+
+5. What if you specify frequencies greater than 16k? Any idea why?
+A: the 'Atari effect', periodic about the boundaries
+
+6. What if you specify negative frequencies? Mathematically, is there a
+difference between cos(x) and cos(-x)
+A: no. Not for cos() (it is symmetric about the y-axis)
+
+7. Does the plot indicate the presence of any frequencies other than the one produced by the source? (Hint: Use Autoscale or increase dB/Div.) What is the apparent amplitude of the noise? Why is there any noise at all?
+A: types, and quantization error from different ones, see section
+
+8. Try multiple signal sources added together. Are there any other interesting operations you could try?
+
+9. Try various waveforms (instead of cosine) in the signal source.
+

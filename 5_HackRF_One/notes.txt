@@ -1,0 +1,144 @@
+5. HackRF One: The hardware
+
+reqs for these notes: some familiarity with RF lingo, reflections etc, computer
+stuff
+
+Hardware:
+USB Micro B connector
+
+LEDs:
+3V3 1V8 RF - PSUs, should all come on when connecting to power supply and normal use
+	and stay on unless in low power mode
+	if not, there is a problem
+
+USB - host computer is talking, is configured as USB device
+
+Rx/Tx - indicates Rx, or Tx operation
+	only when using said operation
+
+USB, Rx,Tx are software controlled (could reprogram function with CFW)
+All are single color LED, not for any purpose
+
+Reset reboots uC, or un/plug USB. use the reset button for connector longevity
+
+DFU - FW update mode but don't have to use most of the time. May need to
+unbrick, or if device doesn't enum on usb bus. Use DFU bootloader (in ROM -
+canot be overwritten) to recover. Hold DFU down while plug in. 3v3 will come on
+alone. Or hold DFU while press/release reset button. Use special sw on host
+computer to install firmware. DFU doesn't do anything outside of power/on mode,
+so you can use as an input after that with some CFW.
+
+RF connectors:
+Leave SMA covers on -- all 3 are SMA (unlike RP-SMA)
+	RF people use opposit m/f syntax than what mossman is saying
+	i.e. male pin = 'male', not male thread = male
+		edit: he says correctly at 10:50
+	RF cables and connectors are sensitive. Be careful with them! Not
+emphasised enough. tho less important than real test equipment.
+
+Use 50 ohm dummy load for testing if you don't want the antenna. Else you'll
+blow your RxTx head LNA from reflection.
+
+Beware of max power levels from hackrf wiki when connecting to matched 50 ohm RF equipment
+
+Clk in/out: route from clk out of one to in of other, when using two hackrf
+ones, or syncing to external time source (GPS disciplined oscillator or Rb freq
+standard). 10 MHz sq wave 0-3.3 V to clk in. this is what should see on clk
+out. Whenever starting Rx or Tx, it checks for 10 MHz signal on clk in. Else, has internal crystal.
+
+How to use/software:
+eix hackrf
+
+libhackrf
+	other software to communicate (how gnuradio does it) like API?
+
+hackrf-tools
+	CLI tools
+
+	hackrf_info
+		fimware version will put git commit if not release
+		
+
+	hackrf_transfer
+		Tx or Rx data from file
+		hackrf_transfer -r /dev/null
+			use to test
+
+		default samp_rate is 10 MHz, or 10 M samp/sec
+		got avg of 20 MiB/s
+		sample is made up of two bytes
+		a sample is two values: each is a signed 8 bit int (signed
+char)
+
+		The hackRF digital section is working correctly and giving us
+10 M samp/s
+
+		Test the usb port for 20 M throughput?
+			-s 20000000
+
+		Some machines and hackRF can go to 21.5 M!
+		Usually the USB connection is the bottleneck
+			Not the CPU or something
+			Only exercises the USB connection if using /dev/null
+				CPU does nothing, HDD does nothing
+			USB host controller limited, 
+			clogged bus with internal devices
+			tests the USB port alone -- important!
+
+			Normal USB should do at least 10 Ms/s
+
+		
+		hackrf_transfer -t /dev/zero -s 
+			two 8 bit signed int per sample. this is the format
+
+		-f -i, filter tuning algos
+		usually just use -f to set freq
+
+		-a amp enable, this is in the osmocom source
+			capable 14 dB of gain avg across f range
+			10 dB or higher in osmocom source to enable
+			
+		-p antenna_enable: normally off, no DC on the port
+			could use with active GPS ant or something
+
+		-n num samples is new
+
+		-c new: carrier wave good for testing states
+	
+		-b note default is less than sample rate -- will pick
+accordingly and usually fine
+	hackrf_spiflash -w  hackrf_one_usb_rom_to_ram.bin
+		update the firmware found in:
+			tar -xvf hackrf-release-package.xz
+			in firmware-bin
+	
+		write to flash on hackrf, then it copies from flash to ram and
+executes it.. this bin has this code to load into ram
+		hackrf_one_usb_ram.dfu is for recovery ops in dfu mode
+
+		reset hackRF to have it copy into ram and execute
+
+CPLD: complex programmable logic device (fpga?), any *.xsvf is for the CPLD
+	chip between the uC and the DAC/ADC
+	provides interface functions between the two
+	may be new version of CPLD config with a release package
+
+	hackrf_cpldjtag -x hackrf_cpld_default.xsvf
+	hackrf_info does not show cpld code version
+
+RF amplifier: RF gain stage is right next to the ant port
+	two, one for Tx, and Rx, and 3rd bypass path
+	if set amp setting to 0 or rf gain to 0 in osmocom, it uses bypass path
+		do this unless you need the boost
+	There is NO FILTER between the ant port and the gain stage
+		if turned on near a high powered device at totally different
+freq (but does make it down the antenna)
+		you could potentially overpower gain stage
+		potentially damage amp in gain stage if unaware of this and
+exceed the hackrf power limits
+
+tips:
+Be sure operate with ant, dummy load, or otherwise matched source (to avoid
+reflections), an attenuator if using a cable probably. Check wiki for power
+limts to see attn if connecting equipment directly.
+

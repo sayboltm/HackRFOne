@@ -207,11 +207,11 @@
     </param>
     <param>
       <key>max</key>
-      <value>107e6</value>
+      <value>107.9e6</value>
     </param>
     <param>
       <key>min</key>
-      <value>87e6</value>
+      <value>87.9e6</value>
     </param>
     <param>
       <key>notebook</key>
@@ -293,11 +293,11 @@
     </param>
     <param>
       <key>max</key>
-      <value>107e6</value>
+      <value>107.9e6</value>
     </param>
     <param>
       <key>min</key>
-      <value>87e6</value>
+      <value>87.9e6</value>
     </param>
     <param>
       <key>notebook</key>

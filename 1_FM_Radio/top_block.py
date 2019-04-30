@@ -3,8 +3,9 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Tue Oct 24 20:48:19 2017
+# Generated: Mon Mar 18 15:57:52 2019
 ##################################################
+
 
 if __name__ == '__main__':
     import ctypes
@@ -45,16 +46,61 @@ class top_block(grc_wxgui.top_block_gui):
         ##################################################
         # Variables
         ##################################################
-        self.variable_slider_0 = variable_slider_0 = 50
-        self.samp_rate = samp_rate = 1e6
+        self.samp_rate = samp_rate = 10e6
         self.channel_width = channel_width = 200e3
-        self.channel_freq = channel_freq = 96.5e6
-        self.center_freq = center_freq = 97.9e6
-        self.audio_gain = audio_gain = 1
+        self.channel_freq = channel_freq = 95.5e6
+        self.center_freq = center_freq = 95.5e6
+        self.audio_gain = audio_gain = .1
 
         ##################################################
         # Blocks
         ##################################################
+        _channel_freq_sizer = wx.BoxSizer(wx.VERTICAL)
+        self._channel_freq_text_box = forms.text_box(
+        	parent=self.GetWin(),
+        	sizer=_channel_freq_sizer,
+        	value=self.channel_freq,
+        	callback=self.set_channel_freq,
+        	label='channel_freq',
+        	converter=forms.float_converter(),
+        	proportion=0,
+        )
+        self._channel_freq_slider = forms.slider(
+        	parent=self.GetWin(),
+        	sizer=_channel_freq_sizer,
+        	value=self.channel_freq,
+        	callback=self.set_channel_freq,
+        	minimum=87e6,
+        	maximum=107e6,
+        	num_steps=200,
+        	style=wx.SL_HORIZONTAL,
+        	cast=float,
+        	proportion=1,
+        )
+        self.Add(_channel_freq_sizer)
+        _center_freq_sizer = wx.BoxSizer(wx.VERTICAL)
+        self._center_freq_text_box = forms.text_box(
+        	parent=self.GetWin(),
+        	sizer=_center_freq_sizer,
+        	value=self.center_freq,
+        	callback=self.set_center_freq,
+        	label='center_freq',
+        	converter=forms.float_converter(),
+        	proportion=0,
+        )
+        self._center_freq_slider = forms.slider(
+        	parent=self.GetWin(),
+        	sizer=_center_freq_sizer,
+        	value=self.center_freq,
+        	callback=self.set_center_freq,
+        	minimum=87e6,
+        	maximum=107e6,
+        	num_steps=200,
+        	style=wx.SL_HORIZONTAL,
+        	cast=float,
+        	proportion=1,
+        )
+        self.Add(_center_freq_sizer)
         _audio_gain_sizer = wx.BoxSizer(wx.VERTICAL)
         self._audio_gain_text_box = forms.text_box(
         	parent=self.GetWin(),
@@ -71,7 +117,7 @@ class top_block(grc_wxgui.top_block_gui):
         	value=self.audio_gain,
         	callback=self.set_audio_gain,
         	minimum=0,
-        	maximum=2,
+        	maximum=10,
         	num_steps=100,
         	style=wx.SL_HORIZONTAL,
         	cast=float,
@@ -90,7 +136,7 @@ class top_block(grc_wxgui.top_block_gui):
         	fft_rate=15,
         	average=True,
         	avg_alpha=None,
-        	title="FFT Plot",
+        	title='FFT Plot',
         	peak_hold=False,
         )
         self.Add(self.wxgui_fftsink2_0_0.win)
@@ -106,40 +152,17 @@ class top_block(grc_wxgui.top_block_gui):
         	fft_rate=15,
         	average=False,
         	avg_alpha=None,
-        	title="FFT Plot",
+        	title='FFT Plot',
         	peak_hold=False,
         )
         self.Add(self.wxgui_fftsink2_0.win)
-        _variable_slider_0_sizer = wx.BoxSizer(wx.VERTICAL)
-        self._variable_slider_0_text_box = forms.text_box(
-        	parent=self.GetWin(),
-        	sizer=_variable_slider_0_sizer,
-        	value=self.variable_slider_0,
-        	callback=self.set_variable_slider_0,
-        	label='variable_slider_0',
-        	converter=forms.float_converter(),
-        	proportion=0,
-        )
-        self._variable_slider_0_slider = forms.slider(
-        	parent=self.GetWin(),
-        	sizer=_variable_slider_0_sizer,
-        	value=self.variable_slider_0,
-        	callback=self.set_variable_slider_0,
-        	minimum=0,
-        	maximum=100,
-        	num_steps=100,
-        	style=wx.SL_HORIZONTAL,
-        	cast=float,
-        	proportion=1,
-        )
-        self.Add(_variable_slider_0_sizer)
         self.rational_resampler_xxx_0 = filter.rational_resampler_ccc(
                 interpolation=12,
                 decimation=5,
                 taps=None,
                 fractional_bw=None,
         )
-        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
+        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
         self.osmosdr_source_0.set_sample_rate(samp_rate)
         self.osmosdr_source_0.set_center_freq(center_freq, 0)
         self.osmosdr_source_0.set_freq_corr(0, 0)
@@ -149,14 +172,14 @@ class top_block(grc_wxgui.top_block_gui):
         self.osmosdr_source_0.set_gain(0, 0)
         self.osmosdr_source_0.set_if_gain(20, 0)
         self.osmosdr_source_0.set_bb_gain(20, 0)
-        self.osmosdr_source_0.set_antenna("", 0)
+        self.osmosdr_source_0.set_antenna('', 0)
         self.osmosdr_source_0.set_bandwidth(0, 0)
-          
+
         self.low_pass_filter_0 = filter.fir_filter_ccf(int(samp_rate/channel_width), firdes.low_pass(
         	1, samp_rate, 75e3, 25e3, firdes.WIN_HAMMING, 6.76))
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((audio_gain, ))
-        self.audio_sink_0 = audio.sink(48000, "", True)
+        self.audio_sink_0 = audio.sink(48000, '', True)
         self.analog_wfm_rcv_0 = analog.wfm_rcv(
         	quad_rate=480e3,
         	audio_decimation=10,
@@ -166,34 +189,26 @@ class top_block(grc_wxgui.top_block_gui):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 1))    
-        self.connect((self.analog_wfm_rcv_0, 0), (self.blocks_multiply_const_vxx_0, 0))    
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.audio_sink_0, 0))    
-        self.connect((self.blocks_multiply_xx_0, 0), (self.low_pass_filter_0, 0))    
-        self.connect((self.blocks_multiply_xx_0, 0), (self.wxgui_fftsink2_0, 0))    
-        self.connect((self.low_pass_filter_0, 0), (self.rational_resampler_xxx_0, 0))    
-        self.connect((self.osmosdr_source_0, 0), (self.blocks_multiply_xx_0, 0))    
-        self.connect((self.osmosdr_source_0, 0), (self.wxgui_fftsink2_0_0, 0))    
-        self.connect((self.rational_resampler_xxx_0, 0), (self.analog_wfm_rcv_0, 0))    
-
-    def get_variable_slider_0(self):
-        return self.variable_slider_0
-
-    def set_variable_slider_0(self, variable_slider_0):
-        self.variable_slider_0 = variable_slider_0
-        self._variable_slider_0_slider.set_value(self.variable_slider_0)
-        self._variable_slider_0_text_box.set_value(self.variable_slider_0)
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 1))
+        self.connect((self.analog_wfm_rcv_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.audio_sink_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.low_pass_filter_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.wxgui_fftsink2_0, 0))
+        self.connect((self.low_pass_filter_0, 0), (self.rational_resampler_xxx_0, 0))
+        self.connect((self.osmosdr_source_0, 0), (self.blocks_multiply_xx_0, 0))
+        self.connect((self.osmosdr_source_0, 0), (self.wxgui_fftsink2_0_0, 0))
+        self.connect((self.rational_resampler_xxx_0, 0), (self.analog_wfm_rcv_0, 0))
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 75e3, 25e3, firdes.WIN_HAMMING, 6.76))
-        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
-        self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
         self.wxgui_fftsink2_0_0.set_sample_rate(self.samp_rate)
+        self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
+        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 75e3, 25e3, firdes.WIN_HAMMING, 6.76))
+        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
 
     def get_channel_width(self):
         return self.channel_width
@@ -206,26 +221,30 @@ class top_block(grc_wxgui.top_block_gui):
 
     def set_channel_freq(self, channel_freq):
         self.channel_freq = channel_freq
-        self.analog_sig_source_x_0.set_frequency(self.center_freq-self.channel_freq)
+        self._channel_freq_slider.set_value(self.channel_freq)
+        self._channel_freq_text_box.set_value(self.channel_freq)
         self.wxgui_fftsink2_0.set_baseband_freq(self.channel_freq)
+        self.analog_sig_source_x_0.set_frequency(self.center_freq-self.channel_freq)
 
     def get_center_freq(self):
         return self.center_freq
 
     def set_center_freq(self, center_freq):
         self.center_freq = center_freq
-        self.analog_sig_source_x_0.set_frequency(self.center_freq-self.channel_freq)
-        self.osmosdr_source_0.set_center_freq(self.center_freq, 0)
+        self._center_freq_slider.set_value(self.center_freq)
+        self._center_freq_text_box.set_value(self.center_freq)
         self.wxgui_fftsink2_0_0.set_baseband_freq(self.center_freq)
+        self.osmosdr_source_0.set_center_freq(self.center_freq, 0)
+        self.analog_sig_source_x_0.set_frequency(self.center_freq-self.channel_freq)
 
     def get_audio_gain(self):
         return self.audio_gain
 
     def set_audio_gain(self, audio_gain):
         self.audio_gain = audio_gain
-        self.blocks_multiply_const_vxx_0.set_k((self.audio_gain, ))
         self._audio_gain_slider.set_value(self.audio_gain)
         self._audio_gain_text_box.set_value(self.audio_gain)
+        self.blocks_multiply_const_vxx_0.set_k((self.audio_gain, ))
 
 
 def main(top_block_cls=top_block, options=None):

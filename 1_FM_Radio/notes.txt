@@ -34,3 +34,5 @@ audio decimation - how much to futher decimate
 48k, great for sound cards
 
 Math operator multiply Const used to adjust audio gain
+
+skipped HW, see lesson 2 video

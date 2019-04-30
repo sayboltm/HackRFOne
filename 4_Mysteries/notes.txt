@@ -1,0 +1,39 @@
+See Lesson 2/HW
+
+Aliasing and our sample rates:
+when using scope plot, beware continuous line, use dot large 
+
+sample rate to throttle block is the real time rate the flowgraph should run
+only doles out output samples at rate specified
+
+but to signal source, doesn't care about realtime rates
+just ratio between sample rate and frequency
+
+to the fft sink, the sample rate affects the ruler/x-scale
+	if set very high, there is a delay with its refresh rate
+		by default, 15 frames/s
+		will mess up refresh rate
+		see ~23:00
+
+set all the sample rates the same, things will generally work correctly
+
+
+types:
+short is a 16 bit int, int 32 bit, float is floating point/decimal as 32 bit
+float, complex is 2 floats(?)
+throttle block has 8 bit byte as well
+2^8 = 256 values in a byte
+
+quantization error:
+this is where the noise from our synthesized cosine wave comes from
+using less bits to represent the data, increases this, increasing noise
+could use double precision 64 bit float (but not in grc)
+we can pick the noise floor, we don't have as easily with analog RF signals
+
+
+HW (more lesson 2 HW for lesson 4 HW):
+1. Add a scope sink
+2. How does scope and FFT change if you change data type from complex to float?
+3. When using float, what happens if specify negative source frequency? How
+does that differ from the behavior when using the complex data type?
+
